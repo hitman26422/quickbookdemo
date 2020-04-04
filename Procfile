@@ -1,1 +1,1 @@
-web: gunicorn irctc.wsgi --log-file -
+web: gunicorn movies.wsgi --log-file -
