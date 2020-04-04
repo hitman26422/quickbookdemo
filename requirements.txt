@@ -1,0 +1,4 @@
+django
+dnspython
+gunicorn
+django-heroku
