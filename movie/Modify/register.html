@@ -1,0 +1,522 @@
+<!--
+=========================================================
+* Argon Design System - v1.2.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-design-system
+* Copyright 2020 Creative Tim (http://www.creative-tim.com)
+
+Coded by www.creative-tim.com
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
+<!DOCTYPE html>
+<html lang="en">
+ {% load static %}
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="google-signin-client_id" content="578761976264-6b3ssgpjn2gsires5ithtai69jgqhqaf.apps.googleusercontent.com">
+   <link rel="apple-touch-icon" sizes="76x76" href="{% static "/assets/img/apple-icon.png" %}">
+  <link rel="icon" type="image/png" href="{% static  "./assets/img/favicon.png" %}">
+ <title>
+    QUICK BOOK REGISTER
+  </title>
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <!-- Nucleo Icons -->
+  <link href="{% static "/assets/css/nucleo-icons.css" %}" rel="stylesheet" />
+  <link href="{% static "/assets/css/nucleo-svg.css" %}" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <link href="{% static "/assets/css/font-awesome.css" %}" rel="stylesheet" />
+  <link href="{% static "/assets/css/nucleo-svg.css" %}" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link href="{% static "/assets/css/argon-design-system.css" %}" rel="stylesheet" />
+
+</head>
+<body class="register-page">
+  <!-- Navbar -->
+  <nav id="navbar-main" class="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light headroom">
+    <div class="container">
+      <a class="navbar-brand mr-lg-5" href="../">
+        <img src="{% static "/assets/img/brand/white.png" %}">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse" id="navbar_global">
+        <div class="navbar-collapse-header">
+          <div class="row">
+            <div class="col-6 collapse-brand">
+              <a href="../../../index.html">
+                <img src="{% static "/assets/img/brand/blue.png" %}">
+              </a>
+            </div>
+            <div class="col-6 collapse-close">
+              <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="" target="_blank" data-toggle="tooltip" title="Like us on Facebook">
+              <i class="fa fa-facebook-square"></i>
+              <span class="nav-link-inner--text d-lg-none">Facebook</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="" target="_blank" data-toggle="tooltip" title="Follow us on Instagram">
+              <i class="fa fa-instagram"></i>
+              <span class="nav-link-inner--text d-lg-none">Instagram</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="" target="_blank" data-toggle="tooltip" title="Follow us on Twitter">
+              <i class="fa fa-twitter-square"></i>
+              <span class="nav-link-inner--text d-lg-none">Twitter</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="" target="_blank" data-toggle="tooltip" title="Star us on Github">
+              <i class="fa fa-github"></i>
+              <span class="nav-link-inner--text d-lg-none">Github</span>
+            </a>
+          </li>
+ <li class="nav-item d-none d-lg-block ml-lg-4">
+            <a  href="#" data-toggle="modal" data-target="#modal-form" class="btn btn-neutral btn-icon">
+              <span class="btn-inner--icon">
+                <i class="fa fa-shopping-cart"></i>
+              </span>
+              <span class="nav-link-inner--text">LOGIN</span>
+            </a>
+            <a href="/modify/register.html" target="_blank" class="btn btn-neutral btn-icon">
+              <span class="btn-inner--icon">
+                <i class="fa fa-cloud-download mr-2"></i>
+              </span>
+              <span class="nav-link-inner--text">REGISTER</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- End Navbar -->
+  <div class="wrapper" id="textcontainer">
+    <section class="section section-shaped section-lg">
+      <div class="shape shape-style-1 bg-gradient-default">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="container pt-lg-7" >
+        <div class="row justify-content-center">
+          <div class="col-lg-5">
+            <div class="card bg-secondary shadow border-0">
+              <div class="card-header bg-white pb-5">
+                        <img src="{% static "/assets/img/brand/white.png" %}">
+              </div>
+              <div class="card-body px-lg-5 py-lg-5">
+           <span  style="display:none;" id="dsignupbut" class="btn btn-primary mt-4"><i>
+                          <img src="{% static "assets/img/brand/30.gif" %}" height="10px"> SIGNINGUP...
+                        </i></span>
+            
+                 <div class="alert alert-success alert-dismissible fade show" id="signupsuccess" style="display: none;" role="alert">
+      <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
+      <span class="alert-inner--text"><strong>Success! </strong>SUCESSFULLY SIGNED UP CLICK HERE <a href="/">LOGIN</a></span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+   
+    <div class="alert alert-warning alert-dismissible fade show" id="signupwarn" style="display: none;" role="alert">
+      <span class="alert-inner--icon"><i class="ni ni-bell-55"></i></span>
+      <span class="alert-inner--text"><strong>Warning!</strong>FILL VALID INFORMATION</span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="alert alert-danger alert-dismissible fade show" id="signuperror" style="display: none;" role="alert">
+      <span class="alert-inner--icon"><i class="ni ni-support-16"></i></span>
+      <span class="alert-inner--text"><strong>Danger!</strong>!SOME ERROR HAPPENED</span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+                <div class="text-center text-muted mb-4" >
+                  <small><h5>Sign up </h5></small>
+                </div>
+                <form role="form" action="#">
+                  <div class="form-group">
+                    <div class="input-group input-group-alternative mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                      </div>
+                      <input class="form-control" placeholder="Name" type="text" id="name" required>
+                       <span class="input-group-text"><i class="ni ni-check-bold" id="checkname1" style="display: none;color:green;"></i></span>
+                           <span class="input-group-text"><i class="ni ni-fat-remove" id="checkname2" style="display: block;color: red;"></i></span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group input-group-alternative mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                      </div>
+                      <input class="form-control" placeholder="Email" id="email_signup"  type="email" required>
+                       <span class="input-group-text"><i class="ni ni-check-bold" id="checkemail1" style="display: none;color:green;"></i></span>
+                           <span class="input-group-text"><i class="ni ni-fat-remove" id="checkemail2" style="display: block;color: red;"></i></span>
+                        <span class="input-group-text"><i id="loading" style="display:none;">
+                          <img src="{% static "images/loading.gif" %}" height="10px"> Checking...
+                        </i></span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group input-group-alternative mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-mobile-button"></i></span>
+                      </div>
+                      <input class="form-control" placeholder="Mobile Number" type="text" id="mob" required>
+                       <span class="input-group-text"><i class="ni ni-check-bold" id="checkmob1" style="display: none;color:green;"></i></span>
+                           <span class="input-group-text"><i class="ni ni-fat-remove" id="checkmob2" style="display: block;color: red;"></i></span>
+                    </div>
+                  </div>
+                  <div class="form-group focused">
+                    <div class="input-group input-group-alternative">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                      </div>
+                      <input class="form-control" placeholder="Password" id="pw1" type="password" required>
+                      <span class="input-group-text"><i class="ni ni-check-bold" id="checkpw1" style="display: none;color:green;"></i></span>
+                           <span class="input-group-text"><i class="ni ni-fat-remove" id="checkpw2" style="display: block;color: red;"></i></span>
+                    </div>
+                  </div>
+                   <div class="form-group focused">
+                    <div class="input-group input-group-alternative">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                      </div>
+                      <input class="form-control" id="pw2" placeholder="RE-ENTER Password" type="password" required>
+                      <span class="input-group-text"><i class="ni ni-check-bold" id="checkpw21" style="display: none;color:green;"></i></span>
+                           <span class="input-group-text"><i class="ni ni-fat-remove" id="checkpw22" style="display: block;color: red;"></i></span>
+                    </div>
+                  </div>
+                  <div class="text-muted font-italic"><small>password strength: <span class="text-success font-weight-700" id="suc" style="display: none;">strong</span>
+<span class="text-success font-weight-700" id="weak" style="color:red !important;display: none;">weak</span>
+<span class="text-success font-weight-700" id="moderate" style="color:orange !important;display: none;">moderate</span>
+                  </small></div>
+                  <div class="row my-4">
+                    <div class="col-12">
+                      <div class="custom-control custom-control-alternative custom-checkbox">
+                        <input class="custom-control-input" id="customCheckRegister" type="checkbox" required>
+                        <label class="custom-control-label" for="customCheckRegister"><span>I agree with the <a href="#">Privacy Policy</a></span></label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <a href="#textcontainer"><button type="button" id="signupbut"  style="display:inline;" onclick="submitcheck()" class="btn btn-primary mt-4">Create account</button></a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="footer">
+      <div class="container">
+        <div class="row row-grid align-items-center mb-5">
+          <div class="col-lg-6">
+            <h3 class="text-primary font-weight-light mb-2">Thank you for supporting us!</h3>
+            <h4 class="mb-0 font-weight-light">Let's get in touch on any of these platforms.</h4>
+          </div>
+          <div class="col-lg-6 text-lg-center btn-wrapper">
+            <button target="_blank" href="" rel="nofollow" class="btn btn-icon-only btn-twitter rounded-circle" data-toggle="tooltip" data-original-title="Follow us">
+              <span class="btn-inner--icon"><i class="fa fa-twitter"></i></span>
+            </button>
+            <button target="_blank" href="" rel="nofollow" class="btn-icon-only rounded-circle btn btn-facebook" data-toggle="tooltip" data-original-title="Like us">
+              <span class="btn-inner--icon"><i class="fab fa-facebook"></i></span>
+            </button>
+            <button target="_blank" href="" rel="nofollow" class="btn btn-icon-only btn-dribbble rounded-circle" data-toggle="tooltip" data-original-title="Follow us">
+              <span class="btn-inner--icon"><i class="fa fa-dribbble"></i></span>
+            </button>
+            <button target="_blank" href="" rel="nofollow" class="btn btn-icon-only btn-github rounded-circle" data-toggle="tooltip" data-original-title="Star on Github">
+              <span class="btn-inner--icon"><i class="fa fa-github"></i></span>
+            </button>
+          </div>
+        </div>
+        <hr>
+        <div class="row align-items-center justify-content-md-between">
+          <div class="col-md-6">
+            <div class="copyright">
+              &copy; 2020 <a href="" target="_blank">DEVELOPED BY NAVEEN</a>.
+            </div>
+          </div>
+            </div>
+      </div>
+    </footer>
+  </div>
+
+
+  <script src="{% static "/assets/js/core/jquery.min.js" %}"type="text/javascript"></script>
+  <script src="{% static "/assets/js/core/popper.min.js" %}" type="text/javascript"></script>
+  <script src="{% static "/assets/js/core/bootstrap.min.js" %}" type="text/javascript"></script>
+  <script src="{% static "/assets/js/plugins/perfect-scrollbar.jquery.min.js" %}"></script>
+  <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
+  <script src="{% static "/assets/js/plugins/bootstrap-switch.js"></script>
+  <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+  <script src="{% static "/assets/js/plugins/nouislider.min.js" %}"type="text/javascript"></script>
+  <script src="{% static "/assets/js/plugins/moment.min.js" %}"></script>
+  <script src="{% static "/assets/js/plugins/datetimepicker.js" %}" type="text/javascript"></script>
+  <script src="{% static "/assets/js/plugins/bootstrap-datepicker.min.js" %}"></script>
+  <!-- Control Center for Argon UI Kit: parallax effects, scripts for the example pages etc -->
+  <
+  <!-- Control Center for Argon UI Kit: parallax effects, scripts for the example pages etc -->
+ 
+  <!--  Google Maps Plugin    -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+  <script src="{% static "/assets/js/argon-design-system.min.js?" %}" type="text/javascript"></script>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS &&
+      TrackJS.install({
+        token: "ee6fab19c5a04ac1a32a645abde4613a",
+        application: "argon-design-system-pro"
+      });
+  </script>
+ 
+  <script>
+       
+var myInput = document.getElementById("email_signup");
+var myInput1 = document.getElementById("pw1");
+var myInput2= document.getElementById("pw2");
+var myInput3= document.getElementById("name");
+var myInput4=document.getElementById("mob");
+myInput4.onkeyup = function() {
+
+  var numbers = /[0-9]/g;
+ if((myInput4.value.match(numbers))&&(myInput4.value.length == 10))
+   { 
+   document.getElementById("checkmob2").style.display = "none"; 
+  document.getElementById("checkmob1").style.display = "block";    
+  
+  } 
+  else 
+  {
+       document.getElementById("checkmob2").style.display = "block"; 
+  document.getElementById("checkmob1").style.display = "none";    
+    }
+ }
+myInput3.onkeyup=function()
+{
+  if(myInput3.value.length >= 3)
+  {
+   document.getElementById("checkname2").style.display = "none"; 
+  document.getElementById("checkname1").style.display = "block";    
+  }
+  else
+  {
+   document.getElementById("checkname2").style.display = "block"; 
+  document.getElementById("checkname1").style.display = "none";       
+  }
+}
+
+myInput2.onkeyup = function() {
+var c_pas = document.getElementById("pw1").value;  
+if(myInput2.value.match(c_pas)&&(c_pas))
+{
+   document.getElementById("checkpw22").style.display = "none"; 
+  document.getElementById("checkpw21").style.display = "block";
+}
+ else 
+  {
+      document.getElementById("checkpw22").style.display = "block"; 
+  document.getElementById("checkpw21").style.display = "none";
+    }
+
+}
+
+
+myInput1.onkeyup = function() {
+   
+  // Validate lowercase letters
+  var lowerCaseLetters = /[a-z]/g;
+  // Validate capital letters
+  var upperCaseLetters = /[A-Z]/g;
+  // Validate numbers
+  var numbers = /[0-9]/g;
+    
+  if(myInput1.value.match(lowerCaseLetters)||myInput1.value.match(upperCaseLetters)||myInput1.value.match(numbers))
+  {
+   document.getElementById("weak").style.display = "block";  
+   document.getElementById("suc").style.display = "none";  
+   document.getElementById("moderate").style.display = "none";  
+  }
+  else
+  {
+   document.getElementById("weak").style.display = "none";    
+  }
+  if((myInput1.value.match(lowerCaseLetters)&&myInput1.value.match(upperCaseLetters))||(myInput1.value.match(lowerCaseLetters)&&myInput1.value.match(numbers))||(myInput1.value.match(upperCaseLetters)&&myInput1.value.match(numbers)))
+  {
+   document.getElementById("weak").style.display = "none";  
+   document.getElementById("suc").style.display = "none";  
+   document.getElementById("moderate").style.display = "block";  
+  }
+  else
+  {
+   document.getElementById("moderate").style.display = "none";    
+  }
+  if((myInput1.value.length >= 8)&&(myInput1.value.match(lowerCaseLetters))&&(myInput1.value.match(upperCaseLetters))&&(myInput1.value.match(numbers)))
+  {
+   document.getElementById("suc").style.display = "block"; 
+   document.getElementById("weak").style.display = "none";  
+   document.getElementById("moderate").style.display = "none";  
+   document.getElementById("checkpw2").style.display = "none"; 
+  document.getElementById("checkpw1").style.display = "block";
+  }
+  else 
+  {
+   document.getElementById("suc").style.display = "none"; 
+   document.getElementById("checkpw2").style.display = "block"; 
+  document.getElementById("checkpw1").style.display = "none";
+    }
+  
+}
+
+
+myInput.onkeyup = function() {
+
+ var ename=document.getElementById( "email_signup" ).value;
+const string="@gmail.com";
+if(ename.includes(string))
+ {
+      document.getElementById("loading").style.display="block";
+  $.ajax({
+  type: 'post',
+  url: '/checkdata/',
+  data: {
+   e_name:ename,
+  },
+    success: function (response) {  
+setTimeout(3000);
+   if(response=="OK") 
+   {
+   // document.getElementById("email_signup").classList.add('error');
+   document.getElementById("checkemail1").style.display = "block";
+   document.getElementById("checkemail2").style.display = "none";
+      document.getElementById("loading").style.display="none";
+  return true;  
+   }
+   else
+   {
+   document.getElementById("checkemail1").style.display = "none";
+     document.getElementById("checkemail2").style.display = "block";
+      document.getElementById("loading").style.display="none";
+ return false;  
+   }
+  }
+  ,
+error: function (jqXHR, textStatus, errorThrown) 
+{ 
+ document.getElementById("checkemail1").style.display = "none";
+     document.getElementById("checkemail2").style.display = "block";
+          alert('some error please try after sometime');
+}
+  });
+ 
+
+ }
+ else
+ {
+ document.getElementById("checkemail1").style.display = "none";
+     document.getElementById("checkemail2").style.display = "block";
+ }
+ }
+ function submitcheck()
+ {
+    document.getElementById("signupbut").style.display="none";
+    document.getElementById("dsignupbut").style.display="block";
+ var demail = document.getElementById("email_signup").value;
+var dpw1= document.getElementById("pw1").value;
+var dname= document.getElementById("name").value;
+var dmob=document.getElementById("mob").value;
+if( (document.getElementById("checkmob1").style.display=="block")&&
+(document.getElementById("checkemail1").style.display=="block")&&
+(document.getElementById("suc").style.display=="block")&&
+(document.getElementById("checkpw21").style.display=="block")&&
+(document.getElementById("checkname1").style.display=="block"))
+{
+ $.ajax({
+  type: 'post',
+  url: '/signup/',
+  data: {
+   name:dname,
+   email:demail,
+   pw1:dpw1,
+   mobile:dmob
+  },
+    success: function (response) {  
+     if(response=="OK") 
+   {
+    setTimeout(1000);
+document.getElementById("signupbut").style.display="inline";
+    document.getElementById("dsignupbut").style.display="none";
+document.getElementById("signupwarn").style.display="none";
+document.getElementById("signupsuccess").style.display="block";
+document.getElementById("signuperror").style.display="none";
+
+
+document.getElementById("checkmob2").style.display=="block"
+document.getElementById("checkemail2").style.display=="block"
+document.getElementById("checkpw22").style.display=="block"
+document.getElementById("checkname2").style.display=="block"
+
+
+document.getElementById("email_signup").value=" ";
+document.getElementById("pw1").value=" ";
+document.getElementById("pw2").value=" ";
+document.getElementById("name").value=" ";
+document.getElementById("mob").value=" ";
+  return true;  
+   }
+   else
+   {
+     setTimeout(1000);
+document.getElementById("signupbut").style.display="inline";
+    document.getElementById("dsignupbut").style.display="none";
+  document.getElementById("signupwarn").style.display="none";
+document.getElementById("signupsuccess").style.display="none";
+document.getElementById("signuperror").style.display="block";
+ return false;  
+   }
+  },
+error: function (jqXHR, textStatus, errorThrown) 
+{ 
+          alert('some error please try after sometime');
+}
+
+  });
+}
+else
+{
+   setTimeout(function() {
+  document.getElementById("signupbut").style.display="inline";
+ }, 1000);
+    document.getElementById("dsignupbut").style.display="none";
+document.getElementById("signupwarn").style.display="block";
+document.getElementById("signupsuccess").style.display="none";
+document.getElementById("signuperror").style.display="none";
+}
+ }
+  </script>
+</body>
+
+</html>
