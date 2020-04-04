@@ -222,7 +222,7 @@ def getmovies(request):
 			'booked':moviesbooked,
 			"count":bookedcount
 			}
-			return render(request, 'modify/profile.html',context)
+			return render(request, 'Modify/profile.html',context)
 	else:
 		return redirect(index)
 
@@ -446,7 +446,7 @@ def checkdata(request):
 		#getting our showdata template
 			return HttpResponse(context)
 	else:
-		return render(request, 'modify/register.html')
+		return render(request, 'Modify/register.html')
 #disabling csrf (cross site request forgery)
 @csrf_exempt
 def signup(request):
@@ -465,7 +465,7 @@ def signup(request):
 				context='NO'
 			return HttpResponse(context)
 	else:
-		return render(request, 'modify/register.html')
+		return render(request, 'Modify/register.html')
 
 def index(request):
 	if request.session.has_key('username'):
@@ -474,7 +474,7 @@ def index(request):
 		return render(request, 'index.html')
 
 def register(request):
-		return render(request, 'modify/register.html')
+		return render(request, 'Modify/register.html')
 
 def profile(request):
 		if request.session.has_key('username'):
@@ -526,7 +526,7 @@ def profile(request):
 			"booked":moviesbooked,
 			"count":bookedcount
 			}
-			return render(request, 'modify/profile.html',context)
+			return render(request, 'Modify/profile.html',context)
 		else:
 			return redirect(index)
 @csrf_exempt
