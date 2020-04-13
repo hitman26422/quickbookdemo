@@ -258,7 +258,7 @@ def sendemail(request):
 		server.ehlo()
 		server.login(seemail,password)
 		try:
-			server.sendmail('mersalnaveen264@gmail.com',email,message)
+			server.sendmail(seemail,email,message)
 			server.close()
 			context='ok'
 		except:
