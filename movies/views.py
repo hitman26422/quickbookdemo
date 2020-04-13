@@ -248,8 +248,8 @@ def sendemail(request):
 		token=request.POST.get('tokens')
 		email=request.POST.get('email')
 		msg = 'THIS MESSAGE IS FROM QUICK BOOK YOUR TOKEN IS.'+token
-		seemail = "mersalnaveen264@gmail.com"
-		password ="Indvssri264"
+		seemail = "dcebatch28@gmail.com"
+		password="Rohitvijay264"
 		SUBJECT='CHANGE PASSWORD'
 		message = 'Subject: {}\n\n{}'.format(SUBJECT, msg)
 		server = smtplib.SMTP('smtp.gmail.com',587) #port 465 or 587
