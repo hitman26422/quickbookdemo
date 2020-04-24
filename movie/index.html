@@ -268,6 +268,7 @@ Coded by www.creative-tim.com
                           <img src="{% static "assets/img/brand/30.gif" %}" height="10px"> SIGNINGIN...
                         </i></span>
                         </div>
+                                                <a href="#" data-toggle="modal" data-target="#modal-default">Forgot password?</a>
                       </form>
                     </div>
                   </div>
@@ -330,6 +331,7 @@ Coded by www.creative-tim.com
                           <img src="{% static "assets/img/brand/30.gif" %}" height="10px"> SIGNINGIN...
                         </i></span>
                   </div>
+                                          <a href="#" data-toggle="modal" data-target="#modal-default">Forgot password?</a>
                 </form>
               </div>
             </div>
@@ -344,6 +346,240 @@ Coded by www.creative-tim.com
       </svg>
     </div>
   </section>
+
+ <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h6 class="modal-title" id="modal-title-default">CHANGE PASSWORD</h6>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body"  id="change_psw1" style="display: block;">
+                <input type="email" id="change_psw"  class="form-control" placeholder="enter your registered email">
+                </div>
+                <div class="modal-body" id="change_psw2" style="display: none;">
+                <input type="hidden"  class="form-control" id="token" placeholder="ENTER TOKEN VALUE SEND TO YOUR EMAIL">
+                <input type="text"  class="form-control" id="tokenorg" placeholder="TOKEN VALUE"><br>
+                <input type="PASSWORD"  id="pw1" class="form-control" placeholder="Please enter your NEW PASSWORD"><br>
+                <input type="PASSWORD" id="pw2" class="form-control" placeholder="Please Re-enter your PASSWORD"><br>
+                 <div class="text-muted font-italic"><small>password strength: <span class="text-success font-weight-700" id="suc" style="display: none;">strong</span>
+<span class="text-success font-weight-700" id="weak" style="color:red !important;display: none;">weak</span>
+<span class="text-success font-weight-700" id="moderate" style="color:orange !important;display: none;">moderate</span>
+                  </small>
+                </div>
+                
+                <div class="text-muted font-italic"><small>password MATCH: <span class="text-success font-weight-700" id="checkpw21" style="display: none;">MATCHED</span>
+<span class="text-success font-weight-700" id="checkpw22" style="color:red !important;display: none;">DOESNT MATCH</span>
+                  </small>
+                </div>
+                
+                </div>
+                                 <div class="modal-footer">
+<button type="button" class="btn btn-primary" style="display: none;" id="cursend">
+                  <img src="{% static "assets/img/brand/30.gif" %}" height="10px">SENDING EMAIL...</button>
+                  <button type="button" class="btn btn-primary" id="curselection" onclick="changepassword();">    
+                      change password</button>
+                   <button type="button" class="btn btn-primary" style="display: none;" id="after_selection" onclick="checkchanges()">Save changes</button>
+                  <button type="button" class="btn btn-primary" style="display: none;" id="updatepassword">
+                  <img src="{% static "assets/img/brand/30.gif" %}" height="10px">UPDATING PASSWORD...</button>
+
+
+                  <button type="button" class="btn btn-link  ml-auto" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      <script type="text/javascript">
+        function checkchanges()
+        {
+ var token=document.getElementById("token").value;
+        var tokenorginal=document.getElementById("tokenorg").value;
+        var password=document.getElementById("pw1").value;
+                  document.getElementById("after_selection").style.display="none";
+            document.getElementById("updatepassword").style.display="block";
+          if(token==tokenorginal&&document.getElementById("checkpw21").style.display=="block"&&document.getElementById("suc").style.display=="block")
+          {
+        alert(password);      
+  $.ajax({
+  type: 'post',
+  url: '/updatepsw/',
+  data: {
+    email:"{{email}}",
+    psw:password,
+   },
+    success: function (response) {  
+     if(response=="ok") 
+   {
+           document.getElementById("after_selection").style.display="block";
+            document.getElementById("updatepassword").style.display="none";
+            alert('updated you will be logged out now');
+       window.location.href='http://localhost:8000/LOGOUT';
+       return true;
+  }
+  else
+  {
+    document.getElementById("after_selection").style.display="block";
+            document.getElementById("updatepassword").style.display="none";
+    return false;
+  }
+},
+error: function (jqXHR, textStatus, errorThrown) 
+{ 
+   document.getElementById("after_selection").style.display="block";
+            document.getElementById("updatepassword").style.display="none";
+          alert('some error in upadting please try after sometime');
+}
+});
+
+          }
+          else
+          {
+            document.getElementById("after_selection").style.display="block";
+            document.getElementById("updatepassword").style.display="none";
+            alert("please fill valid credentials or token is invalid");
+          }
+    }
+var myInput1 = document.getElementById("pw1");
+var myInput2= document.getElementById("pw2");
+myInput1.onkeyup = function() {
+  // Validate lowercase letters
+  var lowerCaseLetters = /[a-z]/g;
+  // Validate capital letters
+  var upperCaseLetters = /[A-Z]/g;
+  // Validate numbers
+  var numbers = /[0-9]/g;
+    
+  if(myInput1.value.match(lowerCaseLetters)||myInput1.value.match(upperCaseLetters)||myInput1.value.match(numbers))
+  {
+   document.getElementById("weak").style.display = "block";  
+   document.getElementById("suc").style.display = "none";  
+   document.getElementById("moderate").style.display = "none";  
+  }
+  else
+  {
+   document.getElementById("weak").style.display = "none";    
+  }
+  if((myInput1.value.match(lowerCaseLetters)&&myInput1.value.match(upperCaseLetters))||(myInput1.value.match(lowerCaseLetters)&&myInput1.value.match(numbers))||(myInput1.value.match(upperCaseLetters)&&myInput1.value.match(numbers)))
+  {
+   document.getElementById("weak").style.display = "none";  
+   document.getElementById("suc").style.display = "none";  
+   document.getElementById("moderate").style.display = "block";  
+  }
+  else
+  {
+   document.getElementById("moderate").style.display = "none";    
+  }
+  if((myInput1.value.length >= 8)&&(myInput1.value.match(lowerCaseLetters))&&(myInput1.value.match(upperCaseLetters))&&(myInput1.value.match(numbers)))
+  {
+   document.getElementById("suc").style.display = "block"; 
+   document.getElementById("weak").style.display = "none";  
+   document.getElementById("moderate").style.display = "none";  
+  }
+  else 
+  {
+   document.getElementById("suc").style.display = "none"; 
+    }
+  
+}
+
+myInput2.onkeyup = function() {
+var c_pas = document.getElementById("pw1").value;  
+if(myInput2.value.match(c_pas)&&(c_pas))
+{
+   document.getElementById("checkpw22").style.display = "none"; 
+  document.getElementById("checkpw21").style.display = "block";
+}
+ else 
+  {
+      document.getElementById("checkpw22").style.display = "block"; 
+  document.getElementById("checkpw21").style.display = "none";
+    }
+
+}
+
+
+
+        function makeid(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+        function changepassword()
+        {
+          var psw=document.getElementById("change_psw").value;
+document.getElementById("curselection").style.display="none";
+            document.getElementById("cursend").style.display="block";
+$.ajax({
+  type: 'post',
+  url: '/checkdata/',
+  data: {
+   e_name:psw,
+  },
+    success: function (response) {  
+   if(response=="fail") 
+   {
+  document.getElementById("curselection").style.display="none";
+            document.getElementById("cursend").style.display="block";
+               var token=makeid(8);
+            $.ajax({
+  type: 'post',
+  url: '/sendemail/',
+  data: {
+    tokens:token,
+    email:psw,
+   },
+    success: function (response) {  
+     if(response=="ok") 
+   {
+       document.getElementById("token").value=token;
+     document.getElementById("cursend").style.display="none";
+        document.getElementById("after_selection").style.display="block";
+          document.getElementById("change_psw1").style.display="none";
+          document.getElementById("change_psw2").style.display="block";
+    return true;
+  }
+  else
+  {
+      document.getElementById("cursend").style.display="none";
+            document.getElementById("curselection").style.display="block";
+            document.getElementById("cursend").style.display="none";
+      alert('server busy try after some time');
+    return false;
+  }
+},
+error: function (jqXHR, textStatus, errorThrown) 
+{ 
+      document.getElementById("cursend").style.display="none";
+            document.getElementById("curselection").style.display="block";
+            document.getElementById("cursend").style.display="none";
+  alert('connot send mail'); 
+}
+});
+  return true;  
+   }
+   else
+   {
+   	document.getElementById("curselection").style.display="block";
+            document.getElementById("cursend").style.display="none";
+   	alert('email doesnt match with our records');
+ return false;  
+   }
+  }
+  ,
+error: function (jqXHR, textStatus, errorThrown) 
+{ 
+          alert('some error please try after sometime');
+}
+  });
+ 
+        }
+      </script>
 
 
      <!-- Typography -->
