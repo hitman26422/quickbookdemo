@@ -394,6 +394,7 @@ Coded by www.creative-tim.com
       <script type="text/javascript">
         function checkchanges()
         {
+           var emailorg=document.getElementById("change_psw").value;
  var token=document.getElementById("token").value;
         var tokenorginal=document.getElementById("tokenorg").value;
         var password=document.getElementById("pw1").value;
@@ -406,7 +407,7 @@ Coded by www.creative-tim.com
   type: 'post',
   url: '/updatepsw/',
   data: {
-    email:"{{email}}",
+    email:emailorg,
     psw:password,
    },
     success: function (response) {  
