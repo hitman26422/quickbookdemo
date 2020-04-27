@@ -36,12 +36,13 @@ def sendseattomob(request):
 			moviedate=request.POST.get('sdate')
 			moviename=request.POST.get('name')
 			movieseats=request.POST.get('sseats')
+			loc=request.POST.get('location')
 			src=request.POST.get('src')
 			cash=request.POST.get('cash')
 			remain=request.session["wallet"]-int(cash);
 			theatreid=request.session["theatreid"]
 			mobile=request.session['mobile']
-			message="THANKS FOR USING QUICK BOOK \n"+moviename+"\n"+moviedate+"\n"+movietimeandscreen+"\nseats:"+movieseats+"amount:"+cash
+			message="THANKS FOR USING QUICK BOOK \n"+moviename+"\n"+loc+"\n"+moviedate+"\n"+movietimeandscreen+"\nseats:"+movieseats+"amount:"+cash
 			p =  sendapi('Ok2xjxr8mFM-qpeKpJXJ04vsL80zRJn4t8KKxpsgGM',mobile,message)
 			global status,context,data,reval
 			context=None
@@ -170,6 +171,10 @@ def getmovies(request):
 			cities=zip(cities,idofcity)
 			imgeurl=[]
 			name=[]
+			locname=db.location.find({"location_id":int(locations)})
+			locnameend=" "
+			for l in locname:
+				locnameend=l['name']
 			result=db.moviename.find({"LOCATIONS":int(locations)})
 			if result:
 				for x in result:
@@ -216,6 +221,7 @@ def getmovies(request):
 			'loop':a,
 			'loopinrow':colum,
 			"locations":cities,
+			'locname':locnameend,
 			'movies':moviestate,
 			'currentlocation':locations,
 			"wallet":request.session['wallet'],
