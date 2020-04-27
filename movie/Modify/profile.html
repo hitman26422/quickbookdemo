@@ -291,7 +291,10 @@ QUICK BOOK
 </div>
 {% endif %}
   <div class="row">
-    <div class="w-100"></div>
+    <div class="w-100">
+    <h2 style="text-align-last: center;">{{locname}}</h2>
+    <br>
+    </div>
 
  {% if movies == "no" %}
       <h1>NO MOVIES SCREENING NEAR YOU</h1>
@@ -624,7 +627,8 @@ $.ajax({
   type: 'post',
   url: '/sendseattomob/',
   data: {
-   timeandscreen:time,
+   location:"{{locname}}",
+    timeandscreen:time,
    sdate:date,
    name:mov,
    sseats:seats,
