@@ -176,12 +176,14 @@ def getmovies(request):
 			for l in locname:
 				locnameend=l['name']
 			result=db.moviename.find({"LOCATIONS":int(locations)})
+			present = datetime.now()
 			if result:
 				for x in result:
-					imgeurl.append(x['IMAGE'])
-					name.append(x['NAME'])
-					cinname=x['NAME']
-					request.session[cinname]=json_serial(x['ENDDATE'])
+					if x['ENDDATE'] >=present:
+						imgeurl.append(x['IMAGE'])
+						name.append(x['NAME'])
+						cinname=x['NAME']
+						request.session[cinname]=json_serial(x['ENDDATE'])
 				if len(imgeurl) == 0:
 					moviestate="no"
 				else:
