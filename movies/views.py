@@ -429,6 +429,8 @@ def google(request):
 				context ='ok'
 			else:
 				context ='fail'
+			if name == None:
+				context='fail'
 		#adding the values in a context variable 
 			print(context)
 		#getting our showdata template
