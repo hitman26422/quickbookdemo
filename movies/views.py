@@ -119,41 +119,84 @@ def getscreendetails(request):
 			return HttpResponse(selectedseats)								
 @csrf_exempt
 def getscreening(request):
-		if request.method == 'POST':
-			locations=request.POST.get('locationid')
-			moviename=request.POST.get('moviename')
-			client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
-			db=client.movies
-			getscreen=db.theatre.find({"$and":[{"locationid":int(locations),"moviename":moviename}]})
-			timings=[]
-			find=False
-			find1=False
-			find2=False
-			if getscreen:
-				for x in getscreen:
-					for y in x['screen1']:
-						if (y.find(moviename) != -1): 
-							timings.append(y.strip(moviename))
-							find=True
-					for y in x['screen2']:
-						if (y.find(moviename) != -1): 
-							timings.append(y.strip(moviename))
-							find1=True
-					for y in x['screen3']:
-						if (y.find(moviename) != -1): 
-							timings.append(y.strip(moviename))
-							find2=True
-					request.session["theatreid"]=x['theatreid']
-				if find ==True or find2 == True or find1 == True:
-					get=request.session[moviename]
-					timings.append(get)
-					timings=json.dumps(timings)
-			else:
-				timings="NO"
-			if not timings:
-				timings="NO"
+        if request.method == 'POST':
+            locations=request.POST.get('locationid')
+            moviename=request.POST.get('moviename')
+            client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+            db=client.movies
+            if request.POST.get('moto'):
+                getscreen=db.theatre.find({"$and":[{"locationid":int(locations),"moviename":moviename}]})
+                timings=[]
+                find=False
+                find1=False
+                find2=False
+                if getscreen:
+                    for x in getscreen:
+                        for y in x['screen1']:
+                            if (y.find(moviename) != -1): 
+                                timings.append(y.strip(moviename))
+                                find=True
+                        for y in x['screen2']:
+                            if (y.find(moviename) != -1): 
+                                timings.append(y.strip(moviename))
+                                find1=True
+                        for y in x['screen3']:
+                            if (y.find(moviename) != -1): 
+                                timings.append(y.strip(moviename))
+                                find2=True
+                                request.session["theatreid"]=x['theatreid']
+                    if find ==True or find2 == True or find1 == True:
+                        get=request.session[moviename]
+                        timings.append(get)
+                        timings=json.dumps(timings)
+                else:
+                    timings="NO"
+                if not timings:
+                    timings="NO"
 
-			return HttpResponse(timings)					
+                return HttpResponse(timings)                    
+            if request.POST.get('dateend'):
+                locations=request.POST.get('locationid')
+                moviename=request.POST.get('moviename')
+                date=request.POST.get('dateend')
+                client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+                db=client.movies
+                getscreen=db.theatre.find({"$and":[{"locationid":int(locations),"moviename":moviename}]})
+                timings=[]
+                find=False
+                find1=False
+                find2=False
+                if getscreen:
+                    for x in getscreen:
+                        for y in x['screen1']:
+                            if (y.find(moviename) != -1) and (y.find(date) != -1): 
+                                key=y.replace(moviename,'')
+                                key=key.replace(date, '')
+                                timings.append(key)
+                                find=True
+                        for y in x['screen2']:
+                            if (y.find(moviename) != -1) and (y.find(date) != -1): 
+                                key=y.replace(moviename,'')
+                                key=key.replace(date, '')
+                                timings.append(key)
+                                find1=True
+                        for y in x['screen3']:
+                            if (y.find(moviename) != -1) and (y.find(date) != -1): 
+                                key=y.replace(moviename,'')
+                                key=key.replace(date, '')
+                                timings.append(key)
+                                find2=True
+                                request.session["theatreid"]=x['theatreid']
+                    if find ==True or find2 == True or find1 == True:
+                        get=request.session[moviename]
+                        timings.append(get)
+                        timings=json.dumps(timings)
+                else:
+                    timings="NO"
+                if not timings:
+                    timings="NO"
+   
+                return HttpResponse(timings)                    
 	
 @csrf_exempt
 def getmovies(request):
