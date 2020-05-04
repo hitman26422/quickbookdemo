@@ -819,6 +819,7 @@ document.getElementById("finalpayment").disabled=false;
   }
   function gobackto()
   {
+    $('#TIMINGS').children('option:not(:first)').remove();
    document.getElementById("groupdate").style.display="block";
     document.getElementById("showsheets").style.display="none";
     document.getElementById("seatselection").style.display="block";
