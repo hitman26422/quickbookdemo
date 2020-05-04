@@ -321,7 +321,8 @@ QUICK BOOK
   <script type="text/javascript">
     function getname(name,locations)
     {
-      document.getElementById("finalmoviename").value=name; 
+  document.getElementById("finalmoviename").value=name; 
+      document.getElementById("finallocation").value=locations;
       var load="loading"+name;
      var srcname="src"+name;
      document.getElementById(name).style.display="none"; 
@@ -333,14 +334,15 @@ $.ajax({
   url: '/getscreening/',
   data: {
   moviename:name,
-  locationid:locations
+  locationid:locations,
+  moto:"true",
   },
     success: function (response) {  
      if(response!="NO"&&response!="[]") 
    {
-    $('#TIMINGS').children('option:not(:first)').remove();
+   // $('#TIMINGS').children('option:not(:first)').remove();
   var counts = JSON.parse(response);
-  var x = document.getElementById("TIMINGS");
+  //var x = document.getElementById("TIMINGS");
   var length=counts.length;
   var i=0;
   var date;
@@ -351,14 +353,14 @@ date=y;
   }
   else
   {
-  var option = document.createElement("option");
-  option.text =y;
-  option.value=y;
-  x.add(option);
+  //var option = document.createElement("option");
+  //option.text =y;
+  //option.value=y;
+  //x.add(option);
     }
     i++;
   }
-  var today = new Date();
+     var today = new Date();
 var dd = today.getDate();
 var mm = today.getMonth()+1; //January is 0!
 var yyyy = today.getFullYear();
@@ -412,25 +414,29 @@ document.getElementById("dateofmovie").setAttribute("max", end);
         </button>
       </div>
    <div class="modal-body" id="groupdate">
-     <div class="input-group">
-      <input type="hidden" id="hiddenmoviename">
-      <select id="TIMINGS" class="custom-select -sm" >
-        <option value="no">select your TIMINGS</option>
-      </select>
-    </div>
-   
-  <br>
+    <br>
     <div class="form-group">
   <div class="input-group">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
     </div>
     <form>
-    <input class="flatpickr flatpickr-input form-control" id="dateofmovie" max="" min="" type="date" placeholder="Select Date.." required="" required>
+    <input class="flatpickr flatpickr-input form-control" onchange="clickscreen()" id="dateofmovie" max="" min="" type="date" placeholder="Select Date.." required="" required>
   </form>
   </div>
+  <div style="display: none;padding-left: 143px;padding-top: 30px;" id="loadscreen">
+ <img   src="{% static "/images/spinner.gif" %}">
+<h4>LOADING SCREEN</h4>
 </div>
+</div>
+<div class="input-group">
+      <input type="hidden" id="hiddenmoviename">
+      <select id="TIMINGS" class="custom-select -sm" >
+        <option value="no">select your TIMINGS</option>
+      </select>
+    </div>
 
+<p>NOTE:SELECT DATES SCREENS WILL BE AUTOMATICALLY LOADED</p>
     </div>
 
 
@@ -495,6 +501,61 @@ a-k costs:190
 
 
 <script type="text/javascript">
+  function clickscreen()
+{
+var date=document.getElementById("dateofmovie").value;
+alert(date);
+document.getElementById("loadscreen").style.display="block";
+    var name=document.getElementById("finalmoviename").value; 
+    var locations=document.getElementById("finallocation").value;
+$.ajax({
+  type: 'post',
+  url: '/getscreening/',
+  data: {
+  moviename:name,
+  locationid:locations,
+  dateend:date,
+  },
+    success: function (response) {  
+     if(response!="NO"&&response!="[]") 
+   {
+   $('#TIMINGS').children('option:not(:first)').remove();
+  var counts = JSON.parse(response);
+  var x = document.getElementById("TIMINGS");
+  var length=counts.length;
+  var i=0;
+  //var date;
+  for (var y of counts) { 
+  if(i==(length-1))
+  {
+//date=y;
+  }
+  else
+  {
+  var option = document.createElement("option");
+  option.text =y;
+  option.value=y;
+  x.add(option);
+    }
+    i++;
+  }
+  document.getElementById("loadscreen").style.display="none";
+  }
+    else
+    {
+     $('#TIMINGS').children('option:not(:first)').remove();
+      alert("no shows detected on this date select another date");
+ document.getElementById("loadscreen").style.display="none";
+    }
+  },
+  error: function (jqXHR, textStatus, errorThrown) 
+{ 
+  alert("please try after sometime");
+document.getElementById("loadscreen").style.display="none";
+}
+});
+}
+
   function getfill(id)
   {
     if(document.getElementById(id).style.color=="red")
@@ -555,6 +616,7 @@ a-k costs:190
 <input type="hidden" id="finalseatselection">
 <input type="hidden" id="finalmoviename">
 <input type="hidden" id="casher">
+  <input type="hidden" id="finallocation">
       </div>
    </div>    
     <div class="modal-footer">
