@@ -532,62 +532,64 @@ def index(request):
 def register(request):
 		return render(request, 'Modify/register.html')
 
+
 def profile(request):
-		if request.session.has_key('username'):
-			client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
-			db=client.movies
-			locations=db.location.find()
-			cities=[]
-			idofcity=[]
-			for y in locations:
-				cities.append(y['name'])
-				idofcity.append(y['location_id'])
-			cities=zip(cities,idofcity)
-			bookedmovies=db.booking.find({"email":request.session['email']})
-			moviesbooked=[]
-			showtime=[]
-			date=[]
-			seats=[]
-			amount=[]
-			moviename=[]
-			src=[]
-			bookedcount=0
-			present = datetime.now().date()
-            		for l in bookedmovies: 
-                		date_time_obj = datetime.strptime(l['DATE'], '%Y-%m-%d')
-                		if date_time_obj.date()>=present:
-                    			if l['showtime']:
-                        			showtime.append(l['showtime'])
-                      				screen=l['showtime']
-                        			screen=screen[-7:];
-                    			if l['DATE']:
-                        			date.append(l['DATE'])      
-                        			bookedcount=bookedcount+1;
-                    				if l[screen]:
-                        				seats.append(l[screen])     
-                    			if l['moviename']:
-                        			moviename.append(l['moviename'])        
-                    			if l['src']:
-                        			src.append(l['src'])        
-                    			if l['amount']:
-                        			amount.append(l['amount'])
-            		moviesbooked=zip(showtime,date,seats,amount,moviename,src)
-			context={
-			'name':request.session['username'],
-			'email':request.session['email'],
-			'password':request.session['password'], 
-			'verify':request.session['verify'],
-			'mobile':request.session['mobile'],
-			'loop':a,
-			'loopinrow':colum,
-			"locations":cities,
-			"wallet":request.session['wallet'],
-			"booked":moviesbooked,
-			"count":bookedcount
-			}
-			return render(request, 'Modify/profile.html',context)
-		else:
-			return redirect(index)
+        if request.session.has_key('username'):
+            client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+            db=client.movies
+            locations=db.location.find()
+            cities=[]
+            idofcity=[]
+            for y in locations:
+                cities.append(y['name'])
+                idofcity.append(y['location_id'])
+            cities=zip(cities,idofcity)
+            bookedmovies=db.booking.find({"email":request.session['email']})
+            moviesbooked=[]
+            showtime=[]
+            date=[]
+            seats=[]
+            amount=[]
+            moviename=[]
+            src=[]
+            bookedcount=0
+            present = datetime.now().date()
+            for l in bookedmovies: 
+                date_time_obj = datetime.strptime(l['DATE'], '%Y-%m-%d')
+                if date_time_obj.date()>=present:
+                    if l['showtime']:
+                        showtime.append(l['showtime'])
+                        screen=l['showtime']
+                        screen=screen[-7:];
+                    if l['DATE']:
+                        date.append(l['DATE'])      
+                        bookedcount=bookedcount+1;
+                    if l[screen]:
+                        seats.append(l[screen])     
+                    if l['moviename']:
+                        moviename.append(l['moviename'])        
+                    if l['src']:
+                        src.append(l['src'])        
+                    if l['amount']:
+                        amount.append(l['amount'])
+            moviesbooked=zip(showtime,date,seats,amount,moviename,src)
+            context={
+            'name':request.session['username'],
+            'email':request.session['email'],
+            'password':request.session['password'], 
+            'verify':request.session['verify'],
+            'mobile':request.session['mobile'],
+            'loop':a,
+            'loopinrow':colum,
+            "locations":cities,
+            "wallet":request.session['wallet'],
+            "booked":moviesbooked,
+            "count":bookedcount
+            }
+            return render(request, 'modify/profile.html',context)
+        else:
+            return redirect(index)
+	
 @csrf_exempt
 def signin(request):
 		if request.method=='POST':
