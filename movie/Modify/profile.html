@@ -433,7 +433,7 @@ var today = new Date();
   alert("please try after sometime");
 }
 });
-
+      document.getElementById(dater).className="btn btn-info";
     }
   </script>
  
@@ -537,8 +537,12 @@ a-k costs:190
 
 
 <script type="text/javascript">
+  var globe; 
   function clickscreen()
 {
+   document.getElementById("dateofmovie").value=dater;
+      document.getElementById(globe).className="btn btn-primary";
+    globe=dater;
 var date=document.getElementById("dateofmovie").value;
 alert(date);
 document.getElementById("loadscreen").style.display="block";
