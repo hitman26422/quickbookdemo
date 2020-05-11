@@ -394,6 +394,7 @@ var today = new Date();
      var dd = today.getDate();
    var mm = ("0" + (today.getMonth() + 1)).slice(-2); //January is 0!
    var yyyy = today.getFullYear();
+    todayc= yyyy+'-'+mm+'-'+dd;  
    var i=true;
   while(i)
   {
@@ -413,7 +414,7 @@ var today = new Date();
     i=true;
    }
   }
-     document.getElementById("nameofmovie").innerHTML=name+" SCREENING(FROM "+today+" UPTO "+end+" )";
+     document.getElementById("nameofmovie").innerHTML=name+" SCREENING(FROM "+todayc+" UPTO "+endb+" )";
       document.getElementById(name).style.display="block"; 
     document.getElementById(load).style.display="none"; 
                  $('#showscreen').modal({backdrop: 'static', keyboard: false});  
@@ -540,7 +541,7 @@ a-k costs:190
 
 <script type="text/javascript">
   var globe; 
-  function clickscreen()
+  function clickscreen(dater,enddater)
 {
    document.getElementById("dateofmovie").value=dater;
       document.getElementById(globe).className="btn btn-primary";
