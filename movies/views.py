@@ -240,23 +240,26 @@ def getmovies(request):
 			moviename=[]
 			src=[]
 			bookedcount=0
-			for l in bookedmovies:
-				if l['showtime']:
-					showtime.append(l['showtime'])
-					screen=l['showtime']
-					screen=screen[-7:];
-				if l['DATE']:
-					date.append(l['DATE'])		
-					bookedcount=bookedcount+1;
-				if l[screen]:
-					seats.append(l[screen])		
-				if l['moviename']:
-					moviename.append(l['moviename'])		
-				if l['src']:
-					src.append(l['src'])		
-				if l['amount']:
-					amount.append(l['amount'])
-			moviesbooked=zip(showtime,date,seats,amount,moviename,src)
+			present = datetime.now().date()
+            		for l in bookedmovies: 
+                		date_time_obj = datetime.strptime(l['DATE'], '%Y-%m-%d')
+                		if date_time_obj.date()>=present:
+                    			if l['showtime']:
+                        			showtime.append(l['showtime'])
+                      				screen=l['showtime']
+                        			screen=screen[-7:];
+                    			if l['DATE']:
+                        			date.append(l['DATE'])      
+                        			bookedcount=bookedcount+1;
+                    				if l[screen]:
+                        				seats.append(l[screen])     
+                    			if l['moviename']:
+                        			moviename.append(l['moviename'])        
+                    			if l['src']:
+                        			src.append(l['src'])        
+                    			if l['amount']:
+                        			amount.append(l['amount'])
+            		moviesbooked=zip(showtime,date,seats,amount,moviename,src)
 			context={
 			'name':request.session['username'],
 			'email':request.session['email'],
@@ -549,23 +552,26 @@ def profile(request):
 			moviename=[]
 			src=[]
 			bookedcount=0
-			for l in bookedmovies:
-				if l['showtime']:
-					showtime.append(l['showtime'])
-					screen=l['showtime']
-					screen=screen[-7:];
-				if l['DATE']:
-					bookedcount=bookedcount+1
-					date.append(l['DATE'])		
-				if l[screen]:
-					seats.append(l[screen])		
-				if l['moviename']:
-					moviename.append(l['moviename'])		
-				if l['src']:
-					src.append(l['src'])		
-				if l['amount']:
-					amount.append(l['amount'])
-			moviesbooked=zip(showtime,date,seats,amount,moviename,src)
+			present = datetime.now().date()
+            		for l in bookedmovies: 
+                		date_time_obj = datetime.strptime(l['DATE'], '%Y-%m-%d')
+                		if date_time_obj.date()>=present:
+                    			if l['showtime']:
+                        			showtime.append(l['showtime'])
+                      				screen=l['showtime']
+                        			screen=screen[-7:];
+                    			if l['DATE']:
+                        			date.append(l['DATE'])      
+                        			bookedcount=bookedcount+1;
+                    				if l[screen]:
+                        				seats.append(l[screen])     
+                    			if l['moviename']:
+                        			moviename.append(l['moviename'])        
+                    			if l['src']:
+                        			src.append(l['src'])        
+                    			if l['amount']:
+                        			amount.append(l['amount'])
+            		moviesbooked=zip(showtime,date,seats,amount,moviename,src)
 			context={
 			'name':request.session['username'],
 			'email':request.session['email'],
