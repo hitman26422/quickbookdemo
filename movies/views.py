@@ -276,7 +276,7 @@ def getmovies(request):
             'booked':moviesbooked,
             "count":bookedcount
             }
-            return render(request, 'modify/profile.html',context)
+            return render(request, 'Modify/profile.html',context)
     else:
         return redirect(index)
 
@@ -586,7 +586,7 @@ def profile(request):
             "booked":moviesbooked,
             "count":bookedcount
             }
-            return render(request, 'modify/profile.html',context)
+            return render(request, 'Modify/profile.html',context)
         else:
             return redirect(index)
 	
