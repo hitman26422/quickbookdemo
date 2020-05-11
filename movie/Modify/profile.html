@@ -40,7 +40,25 @@ QUICK BOOK
     margin:auto;
     padding-top: 50px;
   }
- 
+    #adddate::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+#adddate::-webkit-scrollbar
+{
+  width: 12px;
+  background-color: #F5F5F5;
+}
+
+#adddate::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #D62929;
+} 
 </style>
 </head>
 
@@ -360,26 +378,42 @@ date=y;
     }
     i++;
   }
-     var today = new Date();
-var dd = today.getDate();
-var mm = today.getMonth()+1; //January is 0!
-var yyyy = today.getFullYear();
- if(dd<10){
-        dd='0'+dd
-    } 
-    if(mm<10){
-        mm='0'+mm
-    } 
-today = yyyy+'-'+mm+'-'+dd;
+      function daysAfter(d, days) 
+  {
+  var nd = new Date(d.getTime());
+  nd.setDate(d.getDate() + days);
+  return nd;
+}
 var end=new Date(date);
 var dd = end.getDate();
 var mm = ("0" + (end.getMonth() + 1)).slice(-2); //January is 0!
 var yyyy = end.getFullYear();
-end = yyyy+'-'+mm+'-'+dd;
-document.getElementById("dateofmovie").setAttribute("min", today);
-document.getElementById("dateofmovie").setAttribute("max", end);
-      document.getElementById("dateofmovie").value=today;
-      document.getElementById("nameofmovie").innerHTML=name+" SCREENING(FROM "+today+" UPTO "+end+" )";
+endb = yyyy+'-'+mm+'-'+dd;
+globe=endb;
+var today = new Date();
+     var dd = today.getDate();
+   var mm = ("0" + (today.getMonth() + 1)).slice(-2); //January is 0!
+   var yyyy = today.getFullYear();
+   var i=true;
+  while(i)
+  {
+    todayb = yyyy+'-'+mm+'-'+dd;
+    var inner=document.getElementById("adddate").innerHTML;
+  document.getElementById("adddate").innerHTML=inner+'<span class="border"> <button type="button" id="'+todayb+'" value="'+todayb+'" onclick="clickscreen(\''+todayb+'\',\''+endb+'\')" class="btn btn-primary"><i class="fas fa-calendar-alt"></i><br>'+todayb+'</button> </span>';
+   if(endb==todayb)
+   {    
+    i=false;
+   }
+   else
+   {
+     today = daysAfter(today, 1);
+     var dd = today.getDate();
+   var mm = ("0" + (today.getMonth() + 1)).slice(-2); //January is 0!
+   var yyyy = today.getFullYear();
+    i=true;
+   }
+  }
+     document.getElementById("nameofmovie").innerHTML=name+" SCREENING(FROM "+today+" UPTO "+end+" )";
       document.getElementById(name).style.display="block"; 
     document.getElementById(load).style.display="none"; 
                  $('#showscreen').modal({backdrop: 'static', keyboard: false});  
@@ -416,14 +450,16 @@ document.getElementById("dateofmovie").setAttribute("max", end);
    <div class="modal-body" id="groupdate">
     <br>
     <div class="form-group">
-  <div class="input-group">
-    <div class="input-group-prepend">
-      <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
-    </div>
-    <form>
-    <input class="flatpickr flatpickr-input form-control" onchange="clickscreen()" id="dateofmovie" max="" min="" type="date" placeholder="Select Date.." required="" required>
+        <form>
+<div class="d-flex p-3 bg-secondary text-white" id="adddate" style=" width:auto;
+  height: 100px;
+  overflow-y: auto;
+  overflow-x: scroll;
+  white-space: nowrap;">
+</div>
+    <input  value=" " id="dateofmovie"  type="hidden">
   </form>
-  </div>
+     </div>
   <div style="display: none;padding-left: 143px;padding-top: 30px;" id="loadscreen">
  <img   src="{% static "/images/spinner.gif" %}">
 <h4>LOADING SCREEN</h4>
