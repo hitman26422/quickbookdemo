@@ -1,0 +1,553 @@
+<html>
+{% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+    <link href="{% static "/assets/css/argon-design-system.css" %}" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+ <script src="{% static "/assets/js/core/jquery.min.js" %}"type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+  <script src="{% static "/assets/js/core/popper.min.js" %}" type="text/javascript"></script>
+  <script src="{% static "/assets/js/core/bootstrap.min.js" %}" type="text/javascript"></script>
+  <script src="{% static "/assets/js/plugins/perfect-scrollbar.jquery.min.js" %}"></script>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+  <style type="text/css">
+#exTab3 .nav-pills > li > a {
+  border-radius: 4px 4px 0 0 ;
+}
+
+#exTab3 .tab-content {
+  color : white;
+  background-color: #428bca;
+  padding : 5px 15px;
+}
+  	#adddate::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+#adddate::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+#adddate::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #D62929;
+}
+
+  </style>
+
+<body>
+{% if movieson %}
+<div class="container">
+
+<form method="post" action="">
+<br>
+    <button type="submit" class="btn btn-success">submit</button>	
+  </form>
+{% endif %}
+{% if nomovies %}
+<h1>no movies screening</h1>
+{% endif %}
+</div>
+{% if movies %}
+<div class="container">
+ 
+</div>
+{% elif not movieson %}
+<div class="container">
+
+</div>
+{% endif %}
+<div class="container">
+<div class="nav-wrapper">
+    <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link mb-sm-3 mb-md-0 active" id="tabs-icons-text-1-tab" data-toggle="tab" href="#tabs-icons-text-1" role="tab" aria-controls="tabs-icons-text-1" aria-selected="true"><i class="ni ni-cloud-upload-96 mr-2"></i>UPLOAD MOVIES</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-2-tab" data-toggle="tab" href="#tabs-icons-text-2" role="tab" aria-controls="tabs-icons-text-2" aria-selected="false"><i class="ni ni-bell-55 mr-2"></i>UPDATE SHOWS</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-3-tab" data-toggle="tab" href="#tabs-icons-text-3" role="tab" aria-controls="tabs-icons-text-3" aria-selected="false"><i class="ni ni-calendar-grid-58 mr-2"></i>UPDATE MOVIES</a>
+        </li>
+    </ul>
+</div>
+<div class="card shadow">
+    <div class="card-body">
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel" aria-labelledby="tabs-icons-text-1-tab">
+           
+	<form method="post" action="/upload/" enctype="multipart/form-data" >
+    {% csrf_token %}
+    <input type="file" class="form-control" name="myfile" accept="image/*"  required><br>
+   	<input type="text" placeholder="enter movie name" class="form-control" name="moviename" required><br>
+   <select id="multival"  onchange="getcal()"  class="form-control" multiple="multiple" required>             
+     {% for col,loc in  locations %}
+    <option value="{{loc}}">{{col}}</option>
+    {% endfor %}
+</select>
+ <input type="hidden"  name="loca" id="loca">
+<br>
+<script type="text/javascript">
+$('#multival').multiselect({
+    buttonWidth : '500px',
+    includeSelectAllOption : true,
+		nonSelectedText: 'Select an Option'
+  });
+
+</script>
+
+	<input type="date" placeholder="enter end date" name="date" class="form-control" required>
+    <br>
+    <button type="submit" class="btn btn-success" >Upload</button>
+  </form>
+	 {% if uploaded_file_url %}
+     <img src="{{ uploaded_file_url }}" height="200" width="200">
+   <p>updated</p>
+    {% endif %}
+	 {% if exist  %}
+  	<h2>MOVIE ALREADY SCREENING</h2>
+ {% endif %}
+
+            </div>
+            <div class="tab-pane fade" id="tabs-icons-text-2" role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
+ <select id="getlocationofmo" onchange="getnames()"  name="getlocation" class="form-control" required>             
+     <option selected disabled>select location</option>
+</select>  
+<script>
+var first = document.getElementById('multival');
+var options = first.innerHTML;
+
+var second = document.getElementById('getlocationofmo');
+var options = second.innerHTML + options;
+second.innerHTML = options;
+	</script>
+              <form   >
+ <select  name="mname" id="getdate" class="form-control" onchange="getdateon()" required>             
+     <option value=" " selected disabled>select MOVIE</option>
+</select>
+<div class="d-flex p-3 bg-secondary text-white" id="adddate" style=" width:auto;
+  height: 100px;
+  overflow-y: auto;
+  overflow-x: scroll;
+  white-space: nowrap;">
+</div>
+
+<select id="multiselect"  class="ui fluid dropdown" onchange="getchange()"  multiple="multiple" required>             
+     <option selected disabled>select TIMINGS</option>
+</select>
+<script type="text/javascript">
+	 $('#multiselect').multiselect({
+    buttonWidth : '500px',
+    includeSelectAllOption : true,
+		nonSelectedText: 'Select an Option'
+  });
+
+</script>
+<br>
+ <input type="hidden"  name="location" id="location">
+ <input type="hidden"  name="dated" id="dater">
+    <button type="button" onclick="finalchange()"  class="btn btn-success"  id="disofsubmit" disabled> <span id="spinner" style="display:none;" class="spinner-border spinner-border-sm"></span>submit</button>  
+</form>   
+<script type="text/javascript">
+	function finalchange()
+	{
+			document.getElementById("spinner").style.display="block";	
+		if (!(document.getElementById('dater').value) || !(document.getElementById('location').value) || !(document.getElementById('getdate').value))
+{
+					document.getElementById("spinner").style.display="none";	
+	alert("provide valid information");
+}
+else
+	{	
+	var x=document.getElementById('dater').value;
+		var y=document.getElementById('location').value;
+		var z=document.getElementById('getdate').value;
+		
+			    $.ajax({
+  type: 'post',
+  url: '/updatescreen/',
+  data: {
+   dated:x,
+   location:y,
+   mname:z,
+  },
+    success: function (response) {  
+   if(response=="ok") 
+   {
+   	    $('#multiselect').empty();
+   		$('#multiselect').multiselect('destroy');
+   		document.getElementById("spinner").style.display="none";
+	document.getElementById("disofsubmit").disabled=true;
+   		alert('sucessfully updated');	
+  return true;
+  }
+  else
+  {
+   		document.getElementById("spinner").style.display="none";	
+  	alert("some error in updation");
+  	return false;
+  }
+},
+error: function (jqXHR, textStatus, errorThrown) 
+{ 
+	   		document.getElementById("spinner").style.display="none";	
+          alert('some error please try after sometime');
+}
+});
+}
+	}
+</script>
+
+                       </div>
+            <div class="tab-pane fade" id="tabs-icons-text-3" role="tabpanel" aria-labelledby="tabs-icons-text-3-tab">
+            	<div class="row">
+            {% for img,name in movies %}
+    			<div class="col-sm-3">
+                   <img src="{{img}}" id="src{{name}}" class="img-thumbnail" >
+                         <div style="position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+"><button  type="button" class="btn btn-secondary" style="display: block;" onclick="getname('{{name}}')" id="{{name}}">{{name}}</button>
+<img id="loading{{name}}" style="display: none;" src="{% static "/images/spinner.gif" %}">
+</div>
+            </div>
+            {% endfor %}
+      <script type="text/javascript">
+      	function getname(name)
+      	{
+      		$('#exampleModal').modal('show');
+document.getElementById('exampleModalLabel').innerHTML=" ";
+document.getElementById('exampleModalLabel').innerHTML=name;
+      	}
+      </script>
+            </div>
+        
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <select  name="mloc" id="getmodal" multiple="multiple" onchange="getchange1()" class="form-control"  required>             
+     <option value=" " selected disabled>select LOCATION</option>
+</select>
+<input type="date" class="form-control" id="update">
+<input type="hidden" id="uploc" class="form-control">
+      </div>
+      <script type="text/javascript">
+      	var first = document.getElementById('multival');
+var options = first.innerHTML;
+
+var second = document.getElementById('getmodal');
+var options = second.innerHTML + options;
+second.innerHTML = options;
+ 	 $('#getmodal').multiselect({
+    buttonWidth : '200px',
+    includeSelectAllOption : true,
+		nonSelectedText: 'Select an Option'
+  });
+ 	 	function getchange1()
+	{
+	var selectedValues = $('#getmodal').val();
+	document.getElementById("uploc").value=selectedValues;
+	}	
+
+      </script>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="deletem()"><span id="spinnerofdelete" style="display:none;" class="spinner-border spinner-border-sm"></span>DELETE MOVIE</button>
+        <button type="button" onclick="updatechanges()" class="btn btn-primary"><span id="spinnerofupdate" style="display:none;" class="spinner-border spinner-border-sm"></span>UPDATE changes</button>
+      </div>
+      <script type="text/javascript">
+      	function deletem()
+      	{
+      	 document.getElementById('spinnerofdelete').style.display="block";
+  		if(confirm('are you sure want to delete'))
+  		{
+var name=document.getElementById('exampleModalLabel').innerHTML;
+	$.ajax({
+  type: 'get',
+  url: '/upmovies/',
+  data: {
+   mname:name,
+  },
+    success: function (response) {  
+   if(response=="ok") 
+   {
+   	alert("deleted sucessfully");
+  	 document.getElementById('spinnerofdelete').style.display="none";
+  	   window.location.href='http://localhost:8000/adminmovies';
+  return true;
+  }
+  else
+  {
+  	        alert('some error in deletion');
+  	 	 document.getElementById('spinnerofdelete').style.display="none";
+  	return false;
+  }
+},
+error: function (jqXHR, textStatus, errorThrown) 
+{ 
+	 	 document.getElementById('spinnerofdelete').style.display="none";
+          alert('some error please try after sometime');
+}
+});
+  		}
+  	else
+  	{
+  			 document.getElementById('spinnerofdelete').style.display="none";
+     }
+
+      	}
+      	function updatechanges()
+      	{
+      	 document.getElementById('spinnerofupdate').style.display="block";
+      	if (!(document.getElementById('uploc').value) || !(document.getElementById('update').value) )
+{
+	alert("provide valid information please");
+  	 document.getElementById('spinnerofupdate').style.display="none";
+}
+else
+{
+	var location=document.getElementById('uploc').value;
+	var date=document.getElementById('update').value;
+var name=document.getElementById('exampleModalLabel').innerHTML;
+	$.ajax({
+  type: 'post',
+  url: '/upmovies/',
+  data: {
+   loc:location,
+   dated:date,
+   mname:name,
+  },
+    success: function (response) {  
+   if(response=="ok") 
+   {
+   	alert("updated sucessfully");
+  	 document.getElementById('spinnerofupdate').style.display="none";
+  return true;
+  }
+  else
+  {
+  	        alert('some error in updation');
+  	 	 document.getElementById('spinnerofupdate').style.display="none";
+  	return false;
+  }
+},
+error: function (jqXHR, textStatus, errorThrown) 
+{ 
+	 	 document.getElementById('spinnerofupdate').style.display="none";
+          alert('some error please try after sometime');
+}
+});
+}		 
+      	}
+      </script>
+    </div>
+  </div>
+</div>
+
+        </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+</body>
+
+<script type="text/javascript">
+
+var globe;	
+	function getscreens(dater,enddater)
+	{
+			$('#multiselect').empty();
+document.getElementById("dater").value=dater;
+	document.getElementById("spinner").style.display="block";	
+	document.getElementById(globe).className="btn btn-primary";
+$('#multiselect').multiselect('destroy');
+		globe=dater;
+	$.ajax({
+  type: 'post',
+  url: '/getenddate/',
+  data: {
+   date:dater,
+  },
+    success: function (response) {
+    if(response!="ok") 
+   {
+   	var counts = JSON.parse(response);
+  for (var y of counts)
+  {
+  	var x=document.getElementById('multiselect');
+  	var option = document.createElement("option");
+  option.text =y;
+  option.value=y;
+  x.add(option);
+    
+}
+$('#multiselect').multiselect('refresh');
+
+      document.getElementById("spinner").style.display="none";	
+       return true;
+   }
+   else
+   {
+   	  var array=[' 8:30am SCREEN1',
+    '9:00am SCREEN2',
+    '9:30am SCREEN3',
+    '10:30am SCREEN1',
+    '12:15pm SCREEN2',
+    '12:30pm SCREEN3',
+    '3:00pm SCREEN1',
+    '3:30pm SCREEN2',
+    '4:30pm SCREEN3',
+    '6:30pm SCREEN1',
+    '7:30pm SCREEN2',   '7:15pm SCREEN3'   , '6:30pm SCREEN2'];
+  for (var y of array){
+	var x=document.getElementById('multiselect');
+  	var option = document.createElement("option");
+  option.text =y;
+  option.value=y;
+  x.add(option);	
+}
+$('#multiselect').multiselect('refresh');
+       document.getElementById("spinner").style.display="none";	
+    return false;
+   }
+ }});
+	document.getElementById(dater).className="btn btn-info";
+	}
+	function getdateon()
+	{
+		document.getElementById("adddate").innerHTML=
+		'<div id="load" style="display: none;"><div class="spinner-border text-primary"></div><div class="spinner-border text-primary"></div><div class="spinner-border text-primary"></div>   <div class="spinner-border text-primary"></div>   <div class="spinner-border text-primary"></div>   <div class="spinner-border text-primary"></div>   <div class="spinner-border text-primary"></div>   <div class="spinner-border text-primary"></div>   <div class="spinner-border text-primary"></div>   <div class="spinner-border text-primary"></div>   <div class="spinner-border text-primary"></div>   <div class="spinner-border text-primary"></div>   <div class="spinner-border text-primary"></div>   <div class="spinner-border text-primary"></div>   <div class="spinner-border text-primary"></div></div>';
+		document.getElementById("load").style.display="block";
+		var movie=document.getElementById("getdate").value;
+		      $.ajax({
+  type: 'get',
+  url: '/getenddate/',
+  data: {
+   name:movie,
+  },
+    success: function (response) {
+    if(response!="OK") 
+   {
+   	function daysAfter(d, days) 
+  {
+  var nd = new Date(d.getTime());
+  nd.setDate(d.getDate() + days);
+  return nd;
+}
+var end=new Date(response);
+var dd = end.getDate();
+var mm = ("0" + (end.getMonth() + 1)).slice(-2); //January is 0!
+var yyyy = end.getFullYear();
+endb = yyyy+'-'+mm+'-'+dd;
+globe=endb;
+var today = new Date();
+   	 var dd = today.getDate();
+ 	 var mm = ("0" + (today.getMonth() + 1)).slice(-2); //January is 0!
+   var yyyy = today.getFullYear();
+   var i=true;
+	while(i)
+	{
+    todayb = yyyy+'-'+mm+'-'+dd;
+    var inner=document.getElementById("adddate").innerHTML;
+  document.getElementById("adddate").innerHTML=inner+'<span class="border"> <button type="button" id="'+todayb+'" value="'+todayb+'" onclick="getscreens(\''+todayb+'\',\''+endb+'\')" class="btn btn-primary"><i class="fas fa-calendar-alt"></i><br>'+todayb+'</button> </span>';
+   if(endb==todayb)
+   {		
+   	i=false;
+   }
+   else
+   {
+   	 today = daysAfter(today, 1);
+  	 var dd = today.getDate();
+ 	 var mm = ("0" + (today.getMonth() + 1)).slice(-2); //January is 0!
+   var yyyy = today.getFullYear();
+   	i=true;
+   }
+}
+document.getElementById("load").style.display="none";
+    return true;
+   }
+   else
+   {
+   	alert('somerror happened');
+   	document.getElementById("load").style.display="none";
+    return false;
+   }
+ }});
+	}
+	function getcal()
+	{
+	var selectedValues = $('#multival').val();
+	document.getElementById("loca").value=selectedValues;
+	}	
+
+	function getchange()
+	{
+	var selectedValues = $('#multiselect').val();
+	document.getElementById("disofsubmit").disabled=false;
+	document.getElementById("location").value=selectedValues;
+	}	
+function getnames()
+{
+				document.getElementById("spinner").style.display="block";	
+
+	    $('#getdate').children('option:not(:first)').remove();
+			var location=document.getElementById("getlocationofmo").value;
+ $.ajax({
+  type: 'post',
+  url: '/movieenter/',
+  data: {
+   getlocation:location,
+  },
+    success: function (response) {  
+   if(response!="no") 
+   {
+   		var counts = JSON.parse(response);
+  for (var y of counts)
+  {
+var x = document.getElementById("getdate");
+ var option = document.createElement("option");
+  option.text =y;
+  option.value=y;
+  x.add(option);
+}
+				document.getElementById("spinner").style.display="none";	
+  return true;
+  }
+  else
+  {
+				document.getElementById("spinner").style.display="none";	
+  	alert("no movies running for now");
+  	return false;
+  }
+},
+error: function (jqXHR, textStatus, errorThrown) 
+{ 
+					document.getElementById("spinner").style.display="none";	
+          alert('some error please try after sometime');
+}
+});
+}
+</script>
+
+</html>
