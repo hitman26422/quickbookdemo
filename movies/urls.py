@@ -19,6 +19,12 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+      path('adminmovies/',views.admin),
+       path('getenddate/',views.getenddate),
+       path('upmovies/',views.upmovie),
+      path('upload/',views.uploads),
+      path('movieenter/',views.enter),
+      path('updatescreen/',views.updatescreen),
      path('',views.index),
          path('modify/register.html',views.register),
  		        path('checkdata/',views.checkdata),
