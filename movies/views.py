@@ -11,6 +11,340 @@ import urllib.parse
 import json
 import smtplib
 
+import base64
+from django.core.files.storage import FileSystemStorage
+
+@csrf_exempt
+def upmovie(request):
+    if request.method == 'POST':
+         loc=request.POST['loc']
+         date=request.POST['dated']
+         name=request.POST['mname']
+         client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+         db=client.movies
+         result=db.moviename.update({"NAME":name},{'$set': {"LOCATIONS":[]}})
+         if result:
+            date=date+"T18:30:00.000Z"
+            new = datetime.strptime(date,'%Y-%m-%dT%H:%M:%S.000Z')
+            li = list(loc.split(","))
+            res=[]
+            for i in li:
+                res.append(int(i))
+            result=db.moviename.update({"NAME":name},{'$set': {"LOCATIONS":res,"ENDDATE":new}})   
+            if result:
+                context="ok"
+            else:
+                context="fail"
+         else:
+            context="fail"
+         return HttpResponse(context)        
+    if request.method == 'GET':
+         name=request.GET['mname']
+         client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+         db=client.movies
+         result=db.moviename.remove( { "NAME": name })
+         if result:
+            context="ok"
+         else:
+            context="fail"
+         return HttpResponse(context)        
+         
+@csrf_exempt
+def getenddate(request):
+    if request.method == 'GET':
+         mname=request.GET['name']
+         client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+         db=client.movies
+         result=db.moviename.find({"NAME":mname})
+         date="OK"
+         for y in result:
+            date=json_serial(y['ENDDATE'])
+         return HttpResponse(date) 
+    if request.method == 'POST':
+         date=request.POST['date']
+         client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+         db=client.movies
+         locid=request.session["location"];
+         getscreen=db.theatre.find({"locationid":int(locid)})
+         find=False
+         find1=False
+         find2=False
+         timings=[]
+         newtimings=[]
+         screens=[' 8:30am SCREEN1',
+    '9:00am SCREEN2',
+    '9:30am SCREEN3',
+    '10:30am SCREEN1',
+    '12:15pm SCREEN2',
+    '12:30pm SCREEN3',
+    '3:00pm SCREEN1',
+    '3:30pm SCREEN2',
+    '4:30pm SCREEN3',
+    '6:30pm SCREEN1',
+    '7:30pm SCREEN2',  '7:15pm SCREEN3' , '6:30pm SCREEN2']
+         if getscreen:
+                    for x in getscreen:
+                        for y in x['screen1']:
+                            if  y.find(date) != -1: 
+                                key=y.replace(date, '')
+                                timings.append(key)
+                                find=True
+                        for y in x['screen2']:
+                            if y.find(date) != -1: 
+                                key=y.replace(date, '')
+                                timings.append(key)
+                                find1=True
+                        for y in x['screen3']:
+                            if y.find(date) != -1: 
+                                key=y.replace(date, '')
+                                timings.append(key)
+                                find2=True
+                    if find ==True or find2 == True or find1 == True:
+                            for list2 in screens:
+                                if  any(list2 in s for s in timings):
+                                    None
+                                else:
+                                    newtimings.append(list2)
+                            context=json.dumps(newtimings)
+                    else:
+                        context="ok"
+         return HttpResponse(context)
+
+@csrf_exempt
+def updatescreen(request):
+    if request.method == 'POST':
+         mname=request.POST['mname']
+         screen=request.POST['location']
+         date=request.POST['dated']
+         li = list(screen.split(","))
+         screen1=[]
+         screen2=[]
+         screen3=[]
+         for l in li:
+             l=date+" "+mname+" "+l
+             t=l[-7:];
+             if t == "SCREEN1":
+                screen1.append(l)
+             if t == "SCREEN2":
+                screen2.append(l)
+             if t == "SCREEN3":
+                screen3.append(l)
+         result=False
+         client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+         db=client.movies
+         location=db.theatre.find({"$and":[{"locationid":int(request.session["location"]),"moviename":mname}]}).count()
+         if location == 0:
+            result=db.theatre.update({"$and":[{"locationid":int(request.session["location"])}]},{ "$push" : { "moviename":mname } })
+            if result:
+                if screen1:
+                    result=db.theatre.update({"$and":[{"moviename":mname,"locationid":int(request.session["location"])}]},{ "$push" : { "screen1": { "$each":screen1} } })
+                if screen2:
+                    result=db.theatre.update({"$and":[{"moviename":mname,"locationid":int(request.session["location"])}]},{ "$push" : { "screen2": { "$each":screen2} } })
+                if screen3:
+                    result=db.theatre.update({"$and":[{"moviename":mname,"locationid":int(request.session["location"])}]},{ "$push" : { "screen3": { "$each":screen3} } })
+            if result:
+                  context="ok"
+            else:
+                context="fail" 
+         else:
+            result=False
+            if screen1:
+                result=db.theatre.update({"$and":[{"moviename":mname,"locationid":int(request.session["location"])}]},{ "$push" : { "screen1": { "$each":screen1} } })
+            if screen2:
+                result=db.theatre.update({"$and":[{"moviename":mname,"locationid":int(request.session["location"])}]},{ "$push" : { "screen2": { "$each":screen2} } })
+            if screen3:
+                result=db.theatre.update({"$and":[{"moviename":mname,"locationid":int(request.session["location"])}]},{ "$push" : { "screen3": { "$each":screen3} } })
+            print('false')
+            if result:
+                  context="ok"
+            else:
+                context="fail"
+         print(context)
+         return HttpResponse(context)
+
+@csrf_exempt
+def enter(request):
+    if request.method == 'POST':
+        locer=request.POST['getlocation']   
+        request.session["location"]=locer
+        client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+        db=client.movies
+        result=db.moviename.find({"LOCATIONS":int(locer)})
+        present = datetime.now()
+        name=[]
+        if result:
+            for x in result:
+                if x['ENDDATE'] >=present:
+                    name.append(x['NAME'])
+        if not name:
+            context="no";
+        else:
+            context=json.dumps(name)
+        return HttpResponse(context)
+    
+def uploads(request):
+    if request.method == 'POST' and request.FILES['myfile']:
+        moviename=request.POST['moviename']
+        locer=request.POST['loca']
+        date=request.POST['date']
+        moviename=moviename.upper()
+        client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+        db=client.movies
+        exit=db.moviename.find({'NAME': moviename }).count()
+        if exit== 0:
+            myfile = request.FILES['myfile']
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+            with open(filename, "rb") as img_file:
+                my_string = base64.b64encode(img_file.read())
+            typefile=myfile.content_type
+            my_string=my_string.decode("utf-8") 
+            fs.delete(filename)
+            url="data:"+typefile+";base64,"+my_string
+            location=db.location.find()
+            cities=[]
+            idofcity=[]
+            for y in location:
+                cities.append(y['name'])
+                idofcity.append(y['location_id'])
+            cities=zip(cities,idofcity)
+            date=date+"T18:30:00.000Z"
+            new = datetime.strptime(date,'%Y-%m-%dT%H:%M:%S.000Z')
+            li = list(locer.split(","))
+            res=[]
+            for i in li:
+                res.append(int(i))
+            insert={'NAME':moviename,'IMAGE':url,'LOCATIONS':res,'ENDDATE': new}
+            result=db.moviename.insert(insert)
+            name=[]
+            imgeurl=[]
+            if result:
+                result=db.moviename.find()
+                present = datetime.now()
+                if result:
+                    for x in result:
+                        if x['ENDDATE'] >=present:
+                            imgeurl.append(x['IMAGE'])
+                            name.append(x['NAME'])
+                            cinname=x['NAME']
+                        if len(imgeurl) == 0:
+                            moviestate="no"
+                        else:
+                            moviestate=zip(imgeurl,name)
+                        context={
+                        "locations":cities,
+                        "movies":moviestate,
+                        'uploaded_file_url':url
+                        }
+            else:
+                result=db.moviename.find()
+                present = datetime.now()
+                if result:
+                    for x in result:
+                        if x['ENDDATE'] >=present:
+                            imgeurl.append(x['IMAGE'])
+                            name.append(x['NAME'])
+                            cinname=x['NAME']
+                        if len(imgeurl) == 0:
+                            moviestate="no"
+                        else:
+                            moviestate=zip(imgeurl,name)
+                context={
+                   "movies":moviestate,
+                    "locations":cities,
+                }
+        else:
+            name=[]
+            imgeurl=[]
+            result=db.moviename.find()
+            present = datetime.now()
+            if result:
+                for x in result:
+                    if x['ENDDATE'] >=present:
+                        imgeurl.append(x['IMAGE'])
+                        name.append(x['NAME'])
+                        cinname=x['NAME']
+                        if len(imgeurl) == 0:
+                            moviestate="no"
+                        else:
+                            moviestate=zip(imgeurl,name)
+            location=db.location.find()
+            cities=[]
+            idofcity=[]
+            for y in location:
+                cities.append(y['name'])
+                idofcity.append(y['location_id'])
+            cities=zip(cities,idofcity)
+            context={
+            "locations":cities,
+            "movies":moviestate,
+            'exist':"yes"
+            }
+        return render(request, 'tesr.html',context)
+    else :
+        name=[]
+        imgeurl=[]
+        client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+        db=client.movies
+        location=db.location.find()
+        cities=[]
+        idofcity=[]
+        for y in location:
+            cities.append(y['name'])
+            idofcity.append(y['location_id'])
+        cities=zip(cities,idofcity)
+        result=db.moviename.find()
+        present = datetime.now()
+        if result:
+            for x in result:
+                if x['ENDDATE'] >=present:
+                    imgeurl.append(x['IMAGE'])
+                    name.append(x['NAME'])
+                    cinname=x['NAME']
+                    if len(imgeurl) == 0:
+                        moviestate="no"
+                    else:
+                        moviestate=zip(imgeurl,name)
+        context={
+        "locations":cities,
+        "movies":moviestate,
+        }
+    return render(request, 'tesr.html',context)
+
+def admin(request):
+        if request.session.has_key('email') and request.session['email']=="naveenusharma@gmail.com":
+            client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+            db=client.movies
+            location=db.location.find()
+            cities=[]
+            idofcity=[]
+            name=[]
+            imgeurl=[]
+            for y in location:
+                cities.append(y['name'])
+                idofcity.append(y['location_id'])
+            cities=zip(cities,idofcity)
+            result=db.moviename.find()
+            present = datetime.now()
+            if result:
+                for x in result:
+                    if x['ENDDATE'] >=present:
+                        imgeurl.append(x['IMAGE'])
+                        name.append(x['NAME'])
+                        cinname=x['NAME']
+                if len(imgeurl) == 0:
+                    moviestate="no"
+                else:
+                    moviestate=zip(imgeurl,name)
+            context={
+            "locations":cities,
+            "movies":moviestate,
+            }
+            return render(request, 'tesr.html',context)
+        else:
+            return render(request, 'index.html')            
+
 
 a = []
 for k in range(1,21):
