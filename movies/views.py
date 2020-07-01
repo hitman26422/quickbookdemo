@@ -478,7 +478,7 @@ def getscreening(request):
                             if (y.find(moviename) != -1): 
                                 timings.append(y.strip(moviename))
                                 find2=True
-                                request.session["theatreid"]=x['theatreid']
+                        request.session["theatreid"]=x['theatreid']
                     if find ==True or find2 == True or find1 == True:
                         get=request.session[moviename]
                         timings.append(get)
