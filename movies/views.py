@@ -334,7 +334,7 @@ def admin(request):
                         name.append(x['NAME'])
                         cinname=x['NAME']
                 if len(imgeurl) == 0:
-                    moviestate="no"
+                    moviestate=None
                 else:
                     moviestate=zip(imgeurl,name)
             context={
