@@ -259,6 +259,7 @@ def uploads(request):
             imgeurl=[]
             result=db.moviename.find()
             present = datetime.now()
+	    moviestate=None
             if result:
                 for x in result:
                     if x['ENDDATE'] >=present:
@@ -320,8 +321,7 @@ def admin(request):
             cities=[]
             idofcity=[]
             name=[]
-            imgeurl=[]
-            moviestate=None	
+            imgeurl=[]	
             for y in location:
                 cities.append(y['name'])
                 idofcity.append(y['location_id'])
