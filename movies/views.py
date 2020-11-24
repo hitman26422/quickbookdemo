@@ -321,6 +321,7 @@ def admin(request):
             idofcity=[]
             name=[]
             imgeurl=[]
+            moviestate=None	
             for y in location:
                 cities.append(y['name'])
                 idofcity.append(y['location_id'])
