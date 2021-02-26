@@ -20,7 +20,7 @@ def upmovie(request):
          loc=request.POST['loc']
          date=request.POST['dated']
          name=request.POST['mname']
-         client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+         client = MongoClient("")
          db=client.movies
          result=db.moviename.update({"NAME":name},{'$set': {"LOCATIONS":[]}})
          if result:
@@ -40,7 +40,7 @@ def upmovie(request):
          return HttpResponse(context)        
     if request.method == 'GET':
          name=request.GET['mname']
-         client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+         client = MongoClient("")
          db=client.movies
          result=db.moviename.remove( { "NAME": name })
          if result:
@@ -53,7 +53,7 @@ def upmovie(request):
 def getenddate(request):
     if request.method == 'GET':
          mname=request.GET['name']
-         client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+         client = MongoClient("")
          db=client.movies
          result=db.moviename.find({"NAME":mname})
          date="OK"
@@ -62,7 +62,7 @@ def getenddate(request):
          return HttpResponse(date) 
     if request.method == 'POST':
          date=request.POST['date']
-         client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+         client = MongoClient("")
          db=client.movies
          locid=request.session["location"];
          getscreen=db.theatre.find({"locationid":int(locid)})
@@ -130,7 +130,7 @@ def updatescreen(request):
              if t == "SCREEN3":
                 screen3.append(l)
          result=False
-         client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+         client = MongoClient("")
          db=client.movies
          location=db.theatre.find({"$and":[{"locationid":int(request.session["location"]),"moviename":mname}]}).count()
          if location == 0:
@@ -167,7 +167,7 @@ def enter(request):
     if request.method == 'POST':
         locer=request.POST['getlocation']   
         request.session["location"]=locer
-        client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+        client = MongoClient("")
         db=client.movies
         result=db.moviename.find({"LOCATIONS":int(locer)})
         present = datetime.now()
@@ -188,7 +188,7 @@ def uploads(request):
         locer=request.POST['loca']
         date=request.POST['date']
         moviename=moviename.upper()
-        client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+        client = MongoClient("")
         db=client.movies
         exit=db.moviename.find({'NAME': moviename }).count()
         if exit== 0:
@@ -286,7 +286,7 @@ def uploads(request):
     else :
         name=[]
         imgeurl=[]
-        client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+        client = MongoClient("")
         db=client.movies
         location=db.location.find()
         cities=[]
@@ -315,7 +315,7 @@ def uploads(request):
 
 def admin(request):
         if request.session.has_key('email') and request.session['email']=="naveenusharma@gmail.com":
-            client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+            client = MongoClient("")
             db=client.movies
             location=db.location.find()
             cities=[]
@@ -409,7 +409,7 @@ def checkseats(request):
 			theatreid=request.session["theatreid"]
 			global context
 			context="fail"
-			client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+			client = MongoClient("")
 			db=client.movies
 			screen=movietimeandscreen[-7:];
 			movieseats=movieseats.split(',')
@@ -444,7 +444,7 @@ def getscreendetails(request):
 			movietime=locations=request.POST.get('screenandtime')
 			moviedate=request.POST.get('moviedate')
 			selectedseats=[]
-			client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+			client = MongoClient("")
 			db=client.movies
 			getallocation=db.screen.find({"$and":[{"showtime":movietime,"DATE":moviedate,"theatreid":request.session["theatreid"]}]})
 			screen=movietime[-7:];
@@ -457,7 +457,7 @@ def getscreening(request):
         if request.method == 'POST':
             locations=request.POST.get('locationid')
             moviename=request.POST.get('moviename')
-            client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+            client = MongoClient("")
             db=client.movies
             if request.POST.get('moto'):
                 getscreen=db.theatre.find({"$and":[{"locationid":int(locations),"moviename":moviename}]})
@@ -494,7 +494,7 @@ def getscreening(request):
                 locations=request.POST.get('locationid')
                 moviename=request.POST.get('moviename')
                 date=request.POST.get('dateend')
-                client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+                client = MongoClient("")
                 db=client.movies
                 getscreen=db.theatre.find({"$and":[{"locationid":int(locations),"moviename":moviename}]})
                 timings=[]
@@ -538,7 +538,7 @@ def getmovies(request):
     if request.session.has_key('username'):
         if request.method == 'GET':
             locations=request.GET.get('locationid')
-            client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+            client = MongoClient("")
             db=client.movies
             location=db.location.find()
             cities=[]
@@ -621,7 +621,7 @@ def updatepsw(request):
 	if request.method == 'POST':
 		email=request.POST.get('email')
 		password=request.POST.get('psw')
-		client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+		client = MongoClient("")
 		db=client.movies
 		print(password)
 		update=db.login.update_one({"email":email},{"$set":{"password":password}})
@@ -637,8 +637,8 @@ def sendemail(request):
 		token=request.POST.get('tokens')
 		email=request.POST.get('email')
 		msg = 'THIS MESSAGE IS FROM QUICK BOOK YOUR TOKEN IS.'+token
-		seemail = "dcebatch28@gmail.com"
-		password="Rohitvijay264"
+		seemail = ""
+		password=""
 		SUBJECT='CHANGE PASSWORD'
 		message = 'Subject: {}\n\n{}'.format(SUBJECT, msg)
 		server = smtplib.SMTP('smtp.gmail.com',587) #port 465 or 587
@@ -659,7 +659,7 @@ def changemobile(request):
 	if request.method == 'POST':
 		mobile=request.POST.get('mobile')
 		email=request.POST.get('email')
-		client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+		client = MongoClient("")
 		db=client.movies
 		update=db.login.update_one({"email":email},{"$set":{"mobile":mobile,"verify":"false"}})
 		if update:
@@ -673,7 +673,7 @@ def validateotp(request):
 	if request.method == 'POST':
 		otp=request.POST.get('otp')
 		email=request.POST.get('email')
-		client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+		client = MongoClient("")
 		db=client.movies
 		result=db.otp.find({"$and":[ {"email": email ,"otp":int(otp)}]}).count()
 		global context
@@ -697,7 +697,7 @@ def validateotp(request):
 def deleteotp(request):
 	if request.method == 'POST':
 		email=request.POST.get('email')
-		client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+		client = MongoClient("")
 		db=client.movies
 		insert={'email':email}
 		result=db.otp.delete_many(insert)
@@ -729,14 +729,6 @@ def extract_values(obj, key):
 	return results
 
 
-def sendapi(apikey, numbers, message):
-	data =  urllib.parse.urlencode({'apikey': apikey, 'numbers': numbers,
-		'message' : message})
-	data = data.encode('utf-8')
-	request = urllib.request.Request("https://api.textlocal.in/send/?")
-	f = urllib.request.urlopen(request, data)
-	fr = f.read()
-	return(fr)
  
 #disabling csrf (cross site request forgery)
 @csrf_exempt
@@ -745,13 +737,13 @@ def sendSMS(request):
 		mobile=request.POST.get('MOBILE')
 		otp=randint(000000, 999999);
 		message='OTP FOR QUICK BOOK VERIFICATION OTP:'+str(otp)
-		client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+		client = MongoClient("")
 		db=client.movies
 		email=request.session['email']
 		insert={'email':email,'otp':otp}
 		result=db.otp.insert(insert)
 		if result:
-			p =  sendapi('Ok2xjxr8mFM-qpeKpJXJ04vsL80zRJn4t8KKxpsgGM',mobile,message)
+			p =  sendapi('',mobile,message)
 			global status,context,data,reval
 			context=None
 			status=None
@@ -778,7 +770,7 @@ def sendSMS(request):
 def google(request):
 	if request.method == 'POST':
 			email=request.POST.get('e_name')
-			client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+			client = MongoClient("")
 			db=client.movies
 			insert={'email':email}
 			result=db.login.find(insert)
@@ -824,7 +816,7 @@ def google(request):
 def checkdata(request):
 	if request.method == 'POST':
 			email=request.POST.get('e_name')
-			client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+			client = MongoClient("")
 			db=client.movies
 			insert={'email':email}
 			result=db.login.find_one(insert)
@@ -846,7 +838,7 @@ def signup(request):
 			email=request.POST.get('email')
 			psw=request.POST.get('pw1')
 			mobile=request.POST.get('mobile')
-			client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+			client = MongoClient("")
 			db=client.movies
 			insert={'name':name,'email':email,'mobile':mobile,'password':psw,'verify':'false','wallet':500}
 			result=db.login.insert_one(insert)
@@ -870,7 +862,7 @@ def register(request):
 
 def profile(request):
         if request.session.has_key('username'):
-            client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+            client = MongoClient("")
             db=client.movies
             locations=db.location.find()
             cities=[]
@@ -930,7 +922,7 @@ def signin(request):
 		if request.method=='POST':
 			email=request.POST.get('demail')
 			password=request.POST.get('dpsw')
-			client = MongoClient("mongodb+srv://naveen:Rohit%40264@cluster0-xsqfd.mongodb.net/test?retryWrites=true&w=majority")
+			client = MongoClient("")
 			db=client.movies
 			result=db.login.find({"$and":[ {"email": email ,"password":password }]})
 			global demail,dpsw,name,verify,mobile
